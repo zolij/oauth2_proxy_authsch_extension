@@ -2,10 +2,20 @@
 
 ORIG_PWD=$(pwd)
 
+# clone the original repository
 git clone https://github.com/pusher/oauth2_proxy.git $ORIG_PWD/contrib/oauth2_proxy
 
 cd $ORIG_PWD/contrib/oauth2_proxy
 
+# get the latest release and checkout it
+git fetch --tags
+
+latestTag=$(git describe --tags `git rev-list --tags --max-count=1`)
+
+git checkout $latestTag
+
+# apply authsch patch
 git apply $ORIG_PWD/files/provider_authsch.patch
 
+# build docker image
 docker build -f Dockerfile -t $IMAGE_NAME .
