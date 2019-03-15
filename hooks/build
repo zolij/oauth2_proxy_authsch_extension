@@ -2,8 +2,10 @@
 
 PWD=$(pwd)
 
-git clone https://github.com/pusher/oauth2_proxy.git $PWD/oauth2_proxy
+git clone https://github.com/pusher/oauth2_proxy.git $PWD/contrib/oauth2_proxy
 
-echo $PWD
+cd $PWD/contrib/oauth2_proxy
 
-ls $PWD
+git apply $PWD/files/provider_authsch.patch
+
+docker build -f Dockerfile -t $IMAGE_NAME .
