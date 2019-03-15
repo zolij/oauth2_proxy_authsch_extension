@@ -15,7 +15,7 @@ latestTag=$(git describe --tags `git rev-list --tags --max-count=1`)
 git checkout $latestTag
 
 # apply authsch patch
-git apply $ORIG_PWD/files/provider_authsch.patch
+git am $ORIG_PWD/files/provider_authsch.patch || exit 1
 
 # build docker image
 docker build -f Dockerfile -t $IMAGE_NAME .
