@@ -1,80 +1,80 @@
 diff --git a/providers/authsch.go b/providers/authsch.go
-deleted file mode 100644
-index cc0d10d..0000000
---- a/providers/authsch.go
-+++ /dev/null
-@@ -1,61 +0,0 @@
--package providers
--
--import (
--	"log"
--	"net/http"
--	"net/url"
--
--	"github.com/pusher/oauth2_proxy/api"
--)
--
--// AuthSch represents auth.sch.bme.hu provider
--type AuthSchProvider struct {
--	*ProviderData
--}
--
--// AuthSchProvider initiates a new AuthSchProvider
--func NewAuthSchProvider(p *ProviderData) *AuthSchProvider {
--	p.ProviderName = "AuthSch"
--	if p.LoginURL == nil || p.LoginURL.String() == "" {
--		p.LoginURL = &url.URL{
--			Scheme: "https",
--			Host:   "auth.sch.bme.hu",
--			Path:   "/oauth2/authorize",
--		}
--	}
--	if p.RedeemURL == nil || p.RedeemURL.String() == "" {
--		p.RedeemURL = &url.URL{
--			Scheme: "https",
--			Host:   "auth.sch.bme.hu",
--			Path:   "/oauth2/token",
--		}
--	}
--	if p.ValidateURL == nil || p.ValidateURL.String() == "" {
--		p.ValidateURL = &url.URL{
--			Scheme: "https",
--			Host:   "auth.sch.bme.hu",
--			Path:   "/api/profile",
--		}
--	}
--	if p.Scope == "" {
--		p.Scope = "basic mail"
--	}
--	return &AuthSchProvider{ProviderData: p}
--}
--
--// GetEmailAddress returns the Account email address
--func (p *AuthSchProvider) GetEmailAddress(s *SessionState) (string, error) {
--
--	req, err := http.NewRequest("GET",
--		p.ValidateURL.String()+"?access_token="+s.AccessToken, nil)
--	if err != nil {
--		log.Printf("failed building request %s", err)
--		return "", err
--	}
--	json, err := api.Request(req)
--	if err != nil {
--		log.Printf("failed making request %s", err)
--		return "", err
--	}
--	return json.Get("mail").String()
--}
+new file mode 100644
+index 0000000..cc0d10d
+--- /dev/null
++++ b/providers/authsch.go
+@@ -0,0 +1,61 @@
++package providers
++
++import (
++	"log"
++	"net/http"
++	"net/url"
++
++	"github.com/pusher/oauth2_proxy/api"
++)
++
++// AuthSch represents auth.sch.bme.hu provider
++type AuthSchProvider struct {
++	*ProviderData
++}
++
++// AuthSchProvider initiates a new AuthSchProvider
++func NewAuthSchProvider(p *ProviderData) *AuthSchProvider {
++	p.ProviderName = "AuthSch"
++	if p.LoginURL == nil || p.LoginURL.String() == "" {
++		p.LoginURL = &url.URL{
++			Scheme: "https",
++			Host:   "auth.sch.bme.hu",
++			Path:   "/oauth2/authorize",
++		}
++	}
++	if p.RedeemURL == nil || p.RedeemURL.String() == "" {
++		p.RedeemURL = &url.URL{
++			Scheme: "https",
++			Host:   "auth.sch.bme.hu",
++			Path:   "/oauth2/token",
++		}
++	}
++	if p.ValidateURL == nil || p.ValidateURL.String() == "" {
++		p.ValidateURL = &url.URL{
++			Scheme: "https",
++			Host:   "auth.sch.bme.hu",
++			Path:   "/api/profile",
++		}
++	}
++	if p.Scope == "" {
++		p.Scope = "basic mail"
++	}
++	return &AuthSchProvider{ProviderData: p}
++}
++
++// GetEmailAddress returns the Account email address
++func (p *AuthSchProvider) GetEmailAddress(s *SessionState) (string, error) {
++
++	req, err := http.NewRequest("GET",
++		p.ValidateURL.String()+"?access_token="+s.AccessToken, nil)
++	if err != nil {
++		log.Printf("failed building request %s", err)
++		return "", err
++	}
++	json, err := api.Request(req)
++	if err != nil {
++		log.Printf("failed making request %s", err)
++		return "", err
++	}
++	return json.Get("mail").String()
++}
 diff --git a/providers/providers.go b/providers/providers.go
-index ac8845f..15e6421 100644
+index 15e6421..ac8845f 100644
 --- a/providers/providers.go
 +++ b/providers/providers.go
-@@ -33,8 +33,6 @@ func New(provider string, p *ProviderData) Provider {
+@@ -33,6 +33,8 @@ func New(provider string, p *ProviderData) Provider {
  		return NewGitLabProvider(p)
  	case "oidc":
  		return NewOIDCProvider(p)
--	case "authsch":
--		return NewAuthSchProvider(p)
++	case "authsch":
++		return NewAuthSchProvider(p)
  	default:
  		return NewGoogleProvider(p)
  	}
