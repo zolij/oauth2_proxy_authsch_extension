@@ -2,10 +2,6 @@
 
 ORIG_PWD=$(pwd)
 
-# set git information
-git config --global user.email "build@localhost"
-git config --global user.name "build process"
-
 # clone the original repository
 git clone https://github.com/pusher/oauth2_proxy.git $ORIG_PWD/contrib/oauth2_proxy
 
@@ -19,7 +15,7 @@ latestTag=$(git describe --tags `git rev-list --tags --max-count=1`)
 git checkout $latestTag
 
 # apply authsch patch
-git am $ORIG_PWD/files/provider_authsch.patch || exit 1
+git apply $ORIG_PWD/files/provider_authsch.patch || exit 1
 
 # build docker image
 docker build -f Dockerfile -t $IMAGE_NAME .
