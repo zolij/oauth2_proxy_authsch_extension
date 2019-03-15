@@ -1,0 +1,29 @@
+diff --git a/providers/providers.go b/providers/providers.go
+index 15e6421..ac8845f 100644
+--- a/providers/providers.go
++++ b/providers/providers.go
+@@ -33,6 +33,8 @@ func New(provider string, p *ProviderData) Provider {
+ 		return NewGitLabProvider(p)
+ 	case "oidc":
+ 		return NewOIDCProvider(p)
++	case "authsch":
++		return NewAuthSchProvider(p)
+ 	default:
+ 		return NewGoogleProvider(p)
+ 	}
+diff --git a/string_array.go b/string_array.go
+index 5a624be..a6e1d96 100644
+--- a/string_array.go
++++ b/string_array.go
+@@ -7,6 +7,11 @@ import (
+ // StringArray is a type alias for a slice of strings
+ type StringArray []string
+ 
++// Get returns the slice of strings
++func (a *StringArray) Get() interface{} {
++	return []string(*a)
++}
++
+ // Set appends a string to the StringArray
+ func (a *StringArray) Set(s string) error {
+ 	*a = append(*a, s)
