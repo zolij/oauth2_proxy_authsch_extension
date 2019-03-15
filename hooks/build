@@ -1,11 +1,11 @@
 #!/bin/bash
 
-PWD=$(pwd)
+ORIG_PWD=$(pwd)
 
-git clone https://github.com/pusher/oauth2_proxy.git $PWD/contrib/oauth2_proxy
+git clone https://github.com/pusher/oauth2_proxy.git $ORIG_PWD/contrib/oauth2_proxy
 
-cd $PWD/contrib/oauth2_proxy
+cd $ORIG_PWD/contrib/oauth2_proxy
 
-git apply $PWD/files/provider_authsch.patch
+git apply $ORIG_PWD/files/provider_authsch.patch
 
 docker build -f Dockerfile -t $IMAGE_NAME .
