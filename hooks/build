@@ -2,6 +2,10 @@
 
 ORIG_PWD=$(pwd)
 
+# set git information
+git config user.email "build@localhost"
+git config user.name "build process"
+
 # clone the original repository
 git clone https://github.com/pusher/oauth2_proxy.git $ORIG_PWD/contrib/oauth2_proxy
 
